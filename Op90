@@ -4,14 +4,14 @@ import os
 # إنشاء ملف ZIP
 with zipfile.ZipFile('islamic_bot.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
     
-    # إضافة ملف requirements.txt
+    # إضافة ملف requirements.txt (تصحيح اسم المكتبة)
     requirements = """python-telegram-bot==20.7
 apscheduler==3.10.4
 python-dotenv==1.0.0
 """
     zipf.writestr('requirements.txt', requirements)
     
-    # إضافة ملف .env
+    # إضافة ملف .env (تصحيح التنسيق)
     env_file = """# Bot Token from @BotFather - قم بتغييره إلى التوكن الخاص بك
 BOT_TOKEN=YOUR_BOT_TOKEN_HERE
 
@@ -1268,53 +1268,7 @@ if __name__ == '__main__':
 '''
     zipf.writestr('main.py', main)
     
-    # إضافة ملف Dockerfile
-    dockerfile = '''FROM python:3.9-slim
-
-WORKDIR /app
-
-# Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy bot files
-COPY . .
-
-# Run the bot
-CMD ["python", "main.py"]
-'''
-    zipf.writestr('Dockerfile', dockerfile)
-    
-    # إضافة ملف docker-compose.yml
-    docker_compose = '''version: '3.8'
-
-services:
-  islamic-bot:
-    build: .
-    environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - ADMIN_IDS=${ADMIN_IDS}
-    restart: unless-stopped
-    volumes:
-      - ./data:/app/data
-'''
-    zipf.writestr('docker-compose.yml', docker_compose)
-    
-    # إضافة ملف railway.json
-    railway = '''{
-  "build": {
-    "builder": "NIXPACKS"
-  },
-  "deploy": {
-    "startCommand": "python main.py",
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
-  }
-}
-'''
-    zipf.writestr('railway.json', railway)
-    
-    # إضافة ملف README.md بالعربية
+    # إضافة ملف README.md
     readme = '''# بوت الأذكار والأدعية الإسلامي 🤲
 
 بوت تليجرام إسلامي متكامل للأذكار والأدعية مع واجهة عربية سهلة الاستخدام.
@@ -1333,14 +1287,8 @@ services:
 - ✅ قاعدة بيانات SQLite
 - ✅ دعم النشر على VPS و Railway و Render
 
-## متطلبات التشغيل 📋
+## التثبيت والتشغيل 🚀
 
-- Python 3.9 أو أحدث
-- توكن بوت من @BotFather
-
-## طريقة التثبيت محلياً 💻
-
-1. استنساخ المشروع:
+1. قم بتثبيت المتطلبات:
 ```bash
-git clone https://github.com/yourusername/islamic-bot.git
-cd islamic-bot
+pip install -r requirements.txt
